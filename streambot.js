@@ -2,6 +2,8 @@ const twit = require('twit');
 const fetch = require('node-fetch');
 const config = require('./config');
 const moment = require('moment');
+const url = config.slack_webhook;
+
 
 const T = twit(config)
 
@@ -16,10 +18,23 @@ stream.on('tweet', function (tweet) {
     const prettyDate = moment(momentDate).format('MMM Do YYYY h:mm a');
 
     //if (data.statuses.retweeted_status == undefined) {}
-    console.log(prettyDate + '\n' +
-    tweet.user.screen_name + ": " + 
-    tweet.text);
+    // console.log(prettyDate + '\n' +
+    // tweet.user.screen_name + ": " + 
+    // tweet.text);
+
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({'text': prettyDate + '\n' +
+        tweet.user.screen_name + ": " + 
+        tweet.text})
+    })
+    
 })
+
+
+
+    
+
 
 
 
